@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShieldCheck, Eye, X, BadgeCheck, MapPin, Building2 } from "lucide-react";
 
@@ -28,16 +29,17 @@ const Row = ({ label, value }) => (
   </div>
 );
 
-const CertificateModal = ({ open, onClose }) => (
-  <AnimatePresence>
-    {open && (
-      <motion.div
-        className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        data-testid="udyam-modal"
-      >
+const CertificateModal = ({ open, onClose }) =>
+  createPortal(
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          data-testid="udyam-modal"
+        >
         <motion.div
           className="absolute inset-0 bg-[#0F172A]/60 backdrop-blur-sm"
           onClick={onClose}
@@ -123,8 +125,9 @@ const CertificateModal = ({ open, onClose }) => (
         </motion.div>
       </motion.div>
     )}
-  </AnimatePresence>
-);
+    </AnimatePresence>,
+    document.body
+  );
 
 export const UdyamCertificate = () => {
   const [open, setOpen] = useState(false);
