@@ -50,9 +50,9 @@ const USPSection = () => (
           whileHover={{ y: -6 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           data-testid={`usp-${u.key}`}
-          className={`group relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-7 shadow-[0_4px_20px_rgba(15,23,42,0.03)] transition-shadow duration-300 hover:shadow-[0_16px_40px_rgba(29,78,216,0.1)] ${
+          className={`group relative overflow-hidden rounded-2xl border border-[#E2E8F0] p-7 shadow-[0_4px_20px_rgba(15,23,42,0.03)] transition-shadow duration-300 hover:shadow-[0_16px_40px_rgba(29,78,216,0.1)] ${
             u.span ? "md:col-span-3 lg:col-span-2 lg:row-span-1" : ""
-          } ${u.span ? "bg-[#1D4ED8]" : ""}`}
+          } ${u.span ? "bg-[#1D4ED8]" : "bg-white"}`}
         >
           <div
             className={`flex h-12 w-12 items-center justify-center rounded-xl ${
