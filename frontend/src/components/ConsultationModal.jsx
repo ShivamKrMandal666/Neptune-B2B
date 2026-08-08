@@ -1,17 +1,38 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Check, Loader2, ArrowUpRight } from "lucide-react";
+import { X, Check, Loader2, ArrowUpRight, CalendarDays, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useConsultation } from "@/context/ConsultationContext";
 import { BUDGETS } from "@/lib/data";
 
-const empty = { name: "", email: "", business: "", details: "", budget: "" };
+const empty = { name: "", email: "", business: "", details: "", budget: "", date: "", slot: "" };
+
+const TIME_SLOTS = ["10:00 AM", "11:30 AM", "01:00 PM", "03:00 PM", "04:30 PM", "06:00 PM"];
+
+const buildDays = () => {
+  const days = [];
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  while (days.length < 8) {
+    d.setDate(d.getDate() + 1);
+    const day = d.getDay();
+    if (day === 0) continue; // skip Sundays
+    days.push({
+      key: d.toISOString().slice(0, 10),
+      dow: d.toLocaleDateString("en-US", { weekday: "short" }),
+      dnum: d.getDate(),
+      mon: d.toLocaleDateString("en-US", { month: "short" }),
+    });
+  }
+  return days;
+};
 
 export const ConsultationModal = () => {
   const { open, setOpen } = useConsultation();
   const [form, setForm] = useState(empty);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | loading | success
+  const days = useMemo(buildDays, []);
 
   const set = (k) => (e) => {
     setForm((f) => ({ ...f, [k]: e.target ? e.target.value : e }));
@@ -34,7 +55,12 @@ export const ConsultationModal = () => {
     setStatus("loading");
     setTimeout(() => {
       setStatus("success");
-      toast.success("Request received", { description: "We'll be in touch within 24 hours." });
+      const when = form.date
+        ? `${new Date(form.date).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}${form.slot ? ` at ${form.slot}` : ""}`
+        : null;
+      toast.success("Request received", {
+        description: when ? `Consultation requested for ${when}.` : "We'll be in touch within 24 hours.",
+      });
     }, 1400);
   };
 
@@ -106,6 +132,13 @@ export const ConsultationModal = () => {
                 <p className="mt-2 max-w-xs text-sm text-slate-500">
                   Thanks, {form.name.split(" ")[0] || "there"}. You'll hear back from me directly within 24 hours.
                 </p>
+                {form.date && (
+                  <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#E0E7FF] px-4 py-2 text-xs font-semibold text-[#1D4ED8]">
+                    <CalendarDays className="h-4 w-4" />
+                    {new Date(form.date).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })}
+                    {form.slot ? ` · ${form.slot}` : ""}
+                  </div>
+                )}
                 <button
                   onClick={close}
                   data-testid="consultation-done-btn"
@@ -165,6 +198,52 @@ export const ConsultationModal = () => {
                         }`}
                       >
                         {b}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-[#0F172A]">
+                    <CalendarDays className="h-3.5 w-3.5 text-[#1D4ED8]" /> Pick a date
+                  </label>
+                  <div className="flex gap-2 overflow-x-auto pb-1" data-testid="consult-date-group">
+                    {days.map((d) => (
+                      <button
+                        type="button"
+                        key={d.key}
+                        onClick={() => set("date")(d.key)}
+                        data-testid={`consult-date-${d.key}`}
+                        className={`flex min-w-[58px] shrink-0 flex-col items-center rounded-xl border px-2 py-2 transition-colors ${
+                          form.date === d.key
+                            ? "border-[#1D4ED8] bg-[#1D4ED8] text-white"
+                            : "border-[#E2E8F0] bg-white text-slate-600 hover:border-[#1D4ED8]/40"
+                        }`}
+                      >
+                        <span className="text-[10px] font-semibold uppercase tracking-wide">{d.dow}</span>
+                        <span className="text-lg font-bold leading-none">{d.dnum}</span>
+                        <span className="text-[10px] uppercase">{d.mon}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-[#0F172A]">
+                    <Clock className="h-3.5 w-3.5 text-[#1D4ED8]" /> Pick a time slot
+                  </label>
+                  <div className="flex flex-wrap gap-2" data-testid="consult-slot-group">
+                    {TIME_SLOTS.map((t) => (
+                      <button
+                        type="button"
+                        key={t}
+                        onClick={() => set("slot")(t)}
+                        data-testid={`consult-slot-${t.replace(/[:\s]/g, "")}`}
+                        className={`rounded-full border px-3.5 py-2 text-xs font-medium transition-colors ${
+                          form.slot === t
+                            ? "border-[#1D4ED8] bg-[#1D4ED8] text-white"
+                            : "border-[#E2E8F0] bg-white text-slate-600 hover:border-[#1D4ED8]/40"
+                        }`}
+                      >
+                        {t}
                       </button>
                     ))}
                   </div>

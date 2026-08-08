@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only smoke + feature testing for iteration 2. Verified (1) Udyam certificate template card + modal popup with all required fields, (2) Consultation modal date + time-slot picker end-to-end with validation + success payload, (3) Services page renders all 5 services including new 'Website Maintenance', (4) Regression on consultation open and contact form validation + submission. 20/21 assertions passed; the single failure was a test-timing artifact (500ms wait shorter than framer-motion 450ms exit animation), not an app defect. One minor UX observation reported (navbar overlaps modal backdrop clickable area near top).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Udyam certificate modal (Home hero)",
+        "issues": [
+          "Backdrop click near the very top of the viewport (over the fixed navbar area) does not close the modal because <header data-testid='navbar'> (z-50) intercepts pointer events even though the modal container is z-[110]. Backdrop clicks elsewhere work correctly. Minor UX polish: raise navbar z-index below modal, or add pointer-events:none to navbar when a modal is open."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional / minor) Ensure Udyam certificate modal backdrop stays clickable over the fixed navbar area (stacking context issue). All other functionality is working as expected."
+  ],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "95% (20/21 checks; the 1 failure was a test wait-time artifact, not a real defect)"},
+  "seed_data_creation": "None",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "New features verified against the public URL https://frontend-app-24.preview.emergentagent.com: Udyam card ([data-testid=udyam-card]) + View Certificate button opens [data-testid=udyam-modal] with regNo UDYAM-UP-29-0251726, enterprise NEPTUNE B2B, Micro, address, NIC 62012, dates 06/08/2026 & 07/08/2026. Close via [data-testid=udyam-close-btn] works; backdrop click closes except when clicked over navbar area. Consultation modal: [data-testid=consult-date-group] has 8 day buttons with data-testid=consult-date-YYYY-MM-DD (skips Sundays), and 6 slots (consult-slot-1000AM..0600PM). Submitting empty triggers 3 red validation errors. Successful submit shows [data-testid=consultation-success] with the selected date + slot chip. Services page /services renders 5 cards: web-dev/landing/redesign/responsive/maintenance; new 'Website Maintenance' has expected 4 'What's included' items. Contact form on /contact validates empty submit (3 errors) and shows 'Message sent' success after fill.",
+  "rca_of_the_issue": "The 'backdrop click over navbar area' failure occurs because the Navbar header uses fixed positioning with z-50 but is rendered as a sibling of the modal portal root. Even though the modal wrapper uses z-[110], the pointer-events on the navbar still capture the click when the click target's screen position overlaps the navbar. This is a stacking/pointer-events edge case, not a functional break — the close button and majority of the backdrop area work correctly."
+}

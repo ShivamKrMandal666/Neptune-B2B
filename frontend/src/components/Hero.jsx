@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, TrendingUp, MousePointerClick } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MaskText } from "@/lib/motion";
 import { CTAButton } from "@/components/CTAButton";
+import { UdyamCertificate } from "@/components/UdyamCertificate";
 
 export const Hero = () => {
   const ref = useRef(null);
@@ -98,64 +99,7 @@ export const Hero = () => {
           className="relative lg:col-span-5"
           data-testid="hero-visual"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="relative rounded-3xl border border-[#E2E8F0] bg-white p-3 shadow-[0_30px_80px_rgba(15,23,42,0.12)]"
-          >
-            <div className="flex items-center gap-1.5 px-2 pb-3 pt-1">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#F87171]" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#FBBF24]" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#34D399]" />
-              <span className="ml-3 h-5 flex-1 rounded-full bg-[#F1F5F9]" />
-            </div>
-            <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-[#EFF4FF] to-white p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#1D4ED8]">Conversion</p>
-                  <p className="mt-1 font-display text-3xl font-black text-[#0F172A]">+142%</p>
-                </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1D4ED8] text-white">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-              </div>
-              <div className="mt-5 flex h-24 items-end gap-2">
-                {[38, 52, 44, 68, 60, 82, 96].map((h, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ height: 0 }}
-                    animate={{ height: `${h}%` }}
-                    transition={{ duration: 0.8, delay: 0.9 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex-1 rounded-t-md bg-gradient-to-t from-[#1D4ED8] to-[#60A5FA]"
-                  />
-                ))}
-              </div>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4 }}
-              className="mt-3 flex items-center gap-3 rounded-2xl border border-[#E2E8F0] bg-white p-3"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E0E7FF] text-[#1D4ED8]">
-                <MousePointerClick className="h-4 w-4" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-[#0F172A]">Consultation booked</p>
-                <p className="text-[11px] text-slate-400">funnel step 3 · completed</p>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-6 -top-6 rounded-2xl border border-[#E2E8F0] bg-white px-4 py-3 shadow-lg"
-          >
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Load time</p>
-            <p className="font-display text-lg font-bold text-[#0F172A]">0.4s</p>
-          </motion.div>
+          <UdyamCertificate />
         </motion.div>
       </div>
     </section>

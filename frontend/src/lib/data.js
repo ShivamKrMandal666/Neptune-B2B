@@ -55,6 +55,14 @@ export const SERVICES = [
     desc: "Ensuring flawless performance and pixel discipline across desktop, tablet, and mobile — every breakpoint.",
     includes: ["Mobile-first builds", "Cross-device QA", "Touch-optimized UX", "Speed on every device"],
   },
+  {
+    key: "maintenance",
+    num: "05",
+    icon: "Wrench",
+    name: "Website Maintenance",
+    desc: "Keeping your site fast, secure, and up to date after launch — so it keeps converting without a second thought.",
+    includes: ["Updates & security patches", "Uptime & performance monitoring", "Content & bug fixes", "Monthly health reports"],
+  },
 ];
 
 export const PROCESS = [

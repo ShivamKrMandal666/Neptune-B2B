@@ -19,6 +19,7 @@ import {
   MessagesSquare,
   Wallet,
   LifeBuoy,
+  Wrench,
 } from "lucide-react";
 
 const MAP = {
@@ -42,6 +43,7 @@ const MAP = {
   MessagesSquare,
   Wallet,
   LifeBuoy,
+  Wrench,
 };
 
 export const Icon = ({ name, ...props }) => {
