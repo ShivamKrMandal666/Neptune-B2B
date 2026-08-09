@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Spec `02` — Contact form Server Action (Resend email integration)
+- Spec `udyam-certificate` — Show real Udyam Certificate PDF on "View Certificate" click (lazy-loaded)
 
 ## Completed
 
@@ -18,6 +18,12 @@ Update this file after every meaningful implementation change.
   TechStack, UdyamCertificate), lib utilities (data, motion, icons,
   utils, types) ported. All JS → TS, no `any`, strict mode passes.
   `npm run build` ✅ — 4 static routes, zero errors.
+
+- `udyam-certificate` — "View Certificate" button now opens the real
+  Udyam Registration Certificate PDF via iframe inside the existing
+  modal shell. PDF is lazy-loaded with `next/dynamic` — not fetched
+  on page load. Outer Hero card/badge left completely unchanged.
+  `npm run build` ✅ — 6 routes, zero TypeScript errors.
 
 ## In Progress
 
