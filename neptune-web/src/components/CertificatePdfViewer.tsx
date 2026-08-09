@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShieldCheck, X } from "lucide-react";
@@ -14,14 +14,31 @@ export default function CertificatePdfViewer({
   open,
   onClose,
 }: CertificatePdfViewerProps) {
-  // Close on Escape key
+  const modalRef = useRef<HTMLDivElement>(null);
+  // Close on Escape key.
+  // Also reclaim focus from the PDF iframe so Escape keeps firing on the
+  // host document even after the user clicks inside the embedded PDF.
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+    // When focus moves into the iframe the host window fires a blur event.
+    // Immediately refocus the modal panel so keydown events stay on the
+    // host document.
+    const reclaimFocus = () => {
+      requestAnimationFrame(() => {
+        if (document.activeElement instanceof HTMLIFrameElement) {
+          modalRef.current?.focus({ preventScroll: true });
+        }
+      });
+    };
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("blur", reclaimFocus, { capture: true });
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      window.removeEventListener("blur", reclaimFocus, { capture: true });
+    };
   }, [open, onClose]);
 
   if (typeof document === "undefined") return null;
@@ -47,7 +64,9 @@ export default function CertificatePdfViewer({
 
           {/* Modal panel */}
           <motion.div
-            className="relative z-10 flex h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.3)]"
+            ref={modalRef}
+            tabIndex={-1}
+            className="relative z-10 flex h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.3)] outline-none"
             initial={{ opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.97 }}

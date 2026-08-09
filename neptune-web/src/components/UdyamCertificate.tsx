@@ -34,6 +34,7 @@ export const UDYAM = {
 
 export function UdyamCertificate() {
   const [open, setOpen] = useState(false);
+  const [hasOpenedViewer, setHasOpenedViewer] = useState(false);
   return (
     <>
       {/* Preview card shown in hero */}
@@ -81,7 +82,7 @@ export function UdyamCertificate() {
         </div>
 
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => { setHasOpenedViewer(true); setOpen(true); }}
           data-testid="udyam-view-btn"
           className="group mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#1D4ED8] py-3 text-sm font-medium text-white transition-colors hover:bg-[#1E40AF]"
         >
@@ -103,7 +104,9 @@ export function UdyamCertificate() {
         </div>
       </motion.div>
 
-      <CertificatePdfViewer open={open} onClose={() => setOpen(false)} />
+      {hasOpenedViewer && (
+        <CertificatePdfViewer open={open} onClose={() => setOpen(false)} />
+      )}
     </>
   );
 }
