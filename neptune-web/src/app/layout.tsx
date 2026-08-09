@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { ConsultationProvider } from "@/components/ConsultationContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,9 +40,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full ${inter.variable} ${outfit.variable}`}>
       <body className="min-h-full">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ConsultationProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ConsultationProvider>
       </body>
     </html>
   );
