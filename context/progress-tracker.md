@@ -4,11 +4,11 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-- In Progress
+- Completed
 
 ## Current Goal
 
-- Spec `consultation-button` — All "Book a Consultation" buttons open modal
+- `02` — Contact form Server Action: wire Contact page form to send email via Resend
 
 ## Completed
 
@@ -67,7 +67,7 @@ Update this file after every meaningful implementation change.
 
 ## Session Notes
 
-- Branch: `tech-stack-migration`
+- Branch: `consultation-button`
 - New app: `neptune-web/` (Next.js 16, React 19, Tailwind v4)
 - Legacy source (DO NOT modify): `frontend/`
 - Build command: `cd neptune-web && npm run build`

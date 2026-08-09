@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { motion } from "framer-motion";
 import { Check, Loader2, ArrowUpRight } from "lucide-react";
 import type { ContactFormData, ContactFormErrors, FormStatus } from "@/lib/types";
@@ -11,6 +11,17 @@ const fieldClass =
   "w-full rounded-xl border border-[#E2E8F0] bg-white px-4 py-3.5 text-sm text-[#0F172A] placeholder:text-slate-400 outline-none transition-[border,box-shadow] duration-200 focus:border-transparent focus:ring-2 focus:ring-[#1D4ED8]";
 
 export function ConsultationForm() {
+  const uid = useId();
+  const ids = {
+    name:         `${uid}-name`,
+    nameError:    `${uid}-name-error`,
+    email:        `${uid}-email`,
+    emailError:   `${uid}-email-error`,
+    phone:        `${uid}-phone`,
+    message:      `${uid}-message`,
+    messageError: `${uid}-message-error`,
+  };
+
   const [form, setForm] = useState<ContactFormData>(empty);
   const [errors, setErrors] = useState<ContactFormErrors>({});
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -85,48 +96,48 @@ export function ConsultationForm() {
     <form onSubmit={submit} noValidate data-testid="contact-form">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="contact-name" className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
+          <label htmlFor={ids.name} className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
             Name
           </label>
           <input
-            id="contact-name"
+            id={ids.name}
             data-testid="contact-name"
             value={form.name}
             onChange={set("name")}
             placeholder="Your name"
             className={fieldClass}
             aria-invalid={!!errors.name}
-            aria-describedby={errors.name ? "contact-name-error" : undefined}
+            aria-describedby={errors.name ? ids.nameError : undefined}
           />
           {errors.name && (
-            <p id="contact-name-error" className="mt-1 text-xs text-red-500">{errors.name}</p>
+            <p id={ids.nameError} className="mt-1 text-xs text-red-500">{errors.name}</p>
           )}
         </div>
         <div>
-          <label htmlFor="contact-email" className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
+          <label htmlFor={ids.email} className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
             Email
           </label>
           <input
-            id="contact-email"
+            id={ids.email}
             data-testid="contact-email"
             value={form.email}
             onChange={set("email")}
             placeholder="you@company.com"
             className={fieldClass}
             aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? "contact-email-error" : undefined}
+            aria-describedby={errors.email ? ids.emailError : undefined}
           />
           {errors.email && (
-            <p id="contact-email-error" className="mt-1 text-xs text-red-500">{errors.email}</p>
+            <p id={ids.emailError} className="mt-1 text-xs text-red-500">{errors.email}</p>
           )}
         </div>
       </div>
       <div className="mt-5">
-        <label htmlFor="contact-phone" className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
+        <label htmlFor={ids.phone} className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
           Phone
         </label>
         <input
-          id="contact-phone"
+          id={ids.phone}
           data-testid="contact-phone"
           value={form.phone}
           onChange={set("phone")}
@@ -136,11 +147,11 @@ export function ConsultationForm() {
         />
       </div>
       <div className="mt-5">
-        <label htmlFor="contact-message" className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
+        <label htmlFor={ids.message} className="mb-1.5 block text-xs font-semibold text-[#0F172A]">
           Project details
         </label>
         <textarea
-          id="contact-message"
+          id={ids.message}
           data-testid="contact-message"
           value={form.message}
           onChange={set("message")}
@@ -148,10 +159,10 @@ export function ConsultationForm() {
           placeholder="What are you building, and what should it achieve?"
           className={`${fieldClass} resize-none`}
           aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "contact-message-error" : undefined}
+          aria-describedby={errors.message ? ids.messageError : undefined}
         />
         {errors.message && (
-          <p id="contact-message-error" className="mt-1 text-xs text-red-500">{errors.message}</p>
+          <p id={ids.messageError} className="mt-1 text-xs text-red-500">{errors.message}</p>
         )}
       </div>
       {status === "error" && (
