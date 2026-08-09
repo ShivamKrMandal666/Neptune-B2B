@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useConsultation } from "@/components/ConsultationContext";
 
 interface CTAButtonProps {
   label?: string;
@@ -19,6 +19,8 @@ export function CTAButton({
   className = "",
   testId = "book-consultation-btn",
 }: CTAButtonProps) {
+  const { open } = useConsultation();
+
   const sizes: Record<string, string> = {
     sm: "px-5 py-2.5 text-sm",
     md: "px-7 py-3.5 text-sm",
@@ -39,8 +41,9 @@ export function CTAButton({
       transition={{ type: "spring", stiffness: 400, damping: 22 }}
       className="inline-flex"
     >
-      <Link
-        href="/contact"
+      <button
+        type="button"
+        onClick={open}
         data-testid={testId}
         className={`${base} ${sizes[size]} ${variants[variant]} ${className}`}
       >
@@ -53,7 +56,7 @@ export function CTAButton({
           className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           strokeWidth={2.2}
         />
-      </Link>
+      </button>
     </motion.div>
   );
 }

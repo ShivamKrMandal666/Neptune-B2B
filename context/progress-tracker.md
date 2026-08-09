@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Spec `udyam-certificate` — Show real Udyam Certificate PDF on "View Certificate" click (lazy-loaded)
+- Spec `consultation-button` — All "Book a Consultation" buttons open modal
 
 ## Completed
 
@@ -24,6 +24,15 @@ Update this file after every meaningful implementation change.
   modal shell. PDF is lazy-loaded with `next/dynamic` — not fetched
   on page load. Outer Hero card/badge left completely unchanged.
   `npm run build` ✅ — 6 routes, zero TypeScript errors.
+
+- `consultation-button` — All "Book a Consultation" buttons site-wide
+  (Navbar desktop/mobile, Hero, Footer, Final CTA) now open a Radix
+  Dialog modal containing the existing ConsultationForm instead of
+  navigating to `/contact`. Form logic, validation, and Resend
+  submission unchanged. `/contact` page left fully functional.
+  New files: `ConsultationForm.tsx`, `ConsultationContext.tsx`,
+  `ConsultationModal.tsx`. Updated: `layout.tsx`, `CTAButton.tsx`,
+  `contact/page.tsx`. `npm run build` ✅ — 6 routes, zero errors.
 
 ## In Progress
 
@@ -45,9 +54,13 @@ Update this file after every meaningful implementation change.
   read-only reference).
 - Tailwind v4 CSS-first config used (`@theme inline {}` block in
   `globals.css`) — no `tailwind.config.js` needed.
-- `CTAButton` navigates to `/contact` via `next/link` instead of
-  opening a modal. `ConsultationContext` and `ConsultationModal` are
-  not migrated (modal pattern replaced by the Contact page per spec).
+- `CTAButton` is now a `<button>` that calls `useConsultation().open()`
+  via React context. Previously it navigated to `/contact` via `next/link`.
+  `ConsultationProvider` wraps the root layout body, so any button
+  anywhere in the tree can open the modal without prop drilling.
+- `ConsultationContext` and `ConsultationModal` are now active — the
+  modal pattern replaces the direct `/contact` navigation for CTA buttons.
+  The `/contact` page itself remains fully accessible via nav links.
 - All pages marked `"use client"` because Framer Motion requires
   browser context. Server components can be introduced per-section
   in a future refactor once animation boundaries are clear.
