@@ -146,26 +146,70 @@ html.lenis, html.lenis body { height: auto; }
 /* ── Radix Dialog animation utilities (replaces tw-animate-css) ─────────── */
 @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes zoom-in-95  { from { transform: scale(0.95); } to { transform: scale(1); } }
-@keyframes zoom-out-95 { from { transform: scale(1); } to { transform: scale(0.95); } }
-@keyframes slide-in-from-left-half { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-@keyframes slide-in-from-top-48    { from { transform: translateY(-48%); } to { transform: translateY(0); } }
-@keyframes slide-out-to-left-half  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes slide-out-to-top-48     { from { transform: translateY(0); } to { transform: translateY(-48%); } }
 
-.animate-in  { animation-fill-mode: both; animation-duration: 150ms; }
-.animate-out { animation-fill-mode: both; animation-duration: 150ms; }
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(-50%) translateY(-48%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0) translateY(0);
+  }
+}
 
-.fade-in-0  { animation-name: fade-in; }
-.fade-out-0 { animation-name: fade-out; }
+@keyframes dialog-exit {
+  from {
+    opacity: 1;
+    transform: scale(1) translateX(0) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateX(-50%) translateY(-48%);
+  }
+}
 
-.zoom-in-95  { animation-name: zoom-in-95; }
-.zoom-out-95 { animation-name: zoom-out-95; }
+@utility animate-in {
+  animation-fill-mode: both;
+  animation-duration: 150ms;
+}
 
-.slide-in-from-left-1\/2   { animation-name: slide-in-from-left-half; }
-.slide-in-from-top-\[48\%\] { animation-name: slide-in-from-top-48; }
-.slide-out-to-left-1\/2    { animation-name: slide-out-to-left-half; }
-.slide-out-to-top-\[48\%\]  { animation-name: slide-out-to-top-48; }
+@utility animate-out {
+  animation-fill-mode: both;
+  animation-duration: 150ms;
+}
+
+@utility fade-in-0 {
+  animation-name: fade-in;
+}
+
+@utility fade-out-0 {
+  animation-name: fade-out;
+}
+
+@utility zoom-in-95 {
+  animation-name: dialog-enter;
+}
+
+@utility zoom-out-95 {
+  animation-name: dialog-exit;
+}
+
+@utility slide-in-from-left-half {
+  animation-name: dialog-enter;
+}
+
+@utility slide-in-from-top-48 {
+  animation-name: dialog-enter;
+}
+
+@utility slide-out-to-left-half {
+  animation-name: dialog-exit;
+}
+
+@utility slide-out-to-top-48 {
+  animation-name: dialog-exit;
+}
 
 /* Radix data-state selectors ------------------------------------------------ */
 [data-state="open"].animate-in  { animation-play-state: running; }
