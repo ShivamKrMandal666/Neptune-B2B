@@ -142,3 +142,31 @@ html.lenis, html.lenis body { height: auto; }
     linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 56px 56px;
 }
+
+/* ── Radix Dialog animation utilities (replaces tw-animate-css) ─────────── */
+@keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes zoom-in-95  { from { transform: scale(0.95); } to { transform: scale(1); } }
+@keyframes zoom-out-95 { from { transform: scale(1); } to { transform: scale(0.95); } }
+@keyframes slide-in-from-left-half { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes slide-in-from-top-48    { from { transform: translateY(-48%); } to { transform: translateY(0); } }
+@keyframes slide-out-to-left-half  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes slide-out-to-top-48     { from { transform: translateY(0); } to { transform: translateY(-48%); } }
+
+.animate-in  { animation-fill-mode: both; animation-duration: 150ms; }
+.animate-out { animation-fill-mode: both; animation-duration: 150ms; }
+
+.fade-in-0  { animation-name: fade-in; }
+.fade-out-0 { animation-name: fade-out; }
+
+.zoom-in-95  { animation-name: zoom-in-95; }
+.zoom-out-95 { animation-name: zoom-out-95; }
+
+.slide-in-from-left-1\/2   { animation-name: slide-in-from-left-half; }
+.slide-in-from-top-\[48\%\] { animation-name: slide-in-from-top-48; }
+.slide-out-to-left-1\/2    { animation-name: slide-out-to-left-half; }
+.slide-out-to-top-\[48\%\]  { animation-name: slide-out-to-top-48; }
+
+/* Radix data-state selectors ------------------------------------------------ */
+[data-state="open"].animate-in  { animation-play-state: running; }
+[data-state="closed"].animate-out { animation-play-state: running; }

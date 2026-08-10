@@ -151,7 +151,7 @@ function ServicesOverview() {
           <div>
             <Overline>What I do</Overline>
             <h2 className="mt-4 max-w-xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#0F172A] sm:text-5xl">
-              Four ways to build for conversion.
+              Five ways to build for conversion.
             </h2>
           </div>
           <Link

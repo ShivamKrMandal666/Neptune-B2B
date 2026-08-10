@@ -27,8 +27,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => setMobile(false), [pathname]);
+  // Mobile menu is closed by each link's onClick handler below.
 
   return (
     <>
@@ -59,7 +58,7 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   data-testid={`nav-${l.label.toLowerCase().replace(/\s/g, "-")}`}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`relative z-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     isActive ? "text-[#1D4ED8]" : "text-slate-600 hover:text-[#0F172A]"
                   }`}
                 >
@@ -85,6 +84,8 @@ export function Navbar() {
               onClick={() => setMobile((v) => !v)}
               data-testid="mobile-menu-btn"
               aria-label="Toggle menu"
+              aria-expanded={mobile}
+              aria-controls="mobile-nav-panel"
             >
               {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -96,6 +97,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobile && (
           <motion.div
+            id="mobile-nav-panel"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -108,6 +110,7 @@ export function Navbar() {
                 <Link
                   key={l.href}
                   href={l.href}
+                  onClick={() => setMobile(false)}
                   className={`block rounded-2xl px-4 py-3 text-base font-medium ${
                     isActive ? "bg-[#E0E7FF] text-[#1D4ED8]" : "text-[#0F172A]"
                   }`}

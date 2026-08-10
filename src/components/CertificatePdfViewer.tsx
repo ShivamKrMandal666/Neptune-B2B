@@ -15,15 +15,39 @@ export default function CertificatePdfViewer({
   onClose,
 }: CertificatePdfViewerProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const priorFocusRef = useRef<HTMLElement | null>(null);
   // Close on Escape key.
   // Also reclaim focus from the PDF iframe so Escape keeps firing on the
   // host document even after the user clicks inside the embedded PDF.
   useEffect(() => {
     if (!open) return;
+
+    // Save the element that had focus before the modal opened, then
+    // move focus into the modal panel.
+    priorFocusRef.current = document.activeElement as HTMLElement;
+    requestAnimationFrame(() => modalRef.current?.focus({ preventScroll: true }));
+
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") { onClose(); return; }
+
+      // Tab trap — keep focus inside the modal panel.
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        const els = Array.from(focusable);
+        if (els.length === 0) { e.preventDefault(); return; }
+        const first = els[0];
+        const last = els[els.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
     };
-    // When focus moves into the iframe the host window fires a blur event.
+
+    // When focus moves into the PDF iframe the host window fires a blur event.
     // Immediately refocus the modal panel so keydown events stay on the
     // host document.
     const reclaimFocus = () => {
@@ -33,11 +57,14 @@ export default function CertificatePdfViewer({
         }
       });
     };
+
     window.addEventListener("keydown", handleKey);
     window.addEventListener("blur", reclaimFocus, { capture: true });
     return () => {
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("blur", reclaimFocus, { capture: true });
+      // Restore focus to the element that was active before the modal opened.
+      priorFocusRef.current?.focus({ preventScroll: true });
     };
   }, [open, onClose]);
 
@@ -66,6 +93,9 @@ export default function CertificatePdfViewer({
           <motion.div
             ref={modalRef}
             tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Udyam Registration Certificate"
             className="relative z-10 flex h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.3)] outline-none"
             initial={{ opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
