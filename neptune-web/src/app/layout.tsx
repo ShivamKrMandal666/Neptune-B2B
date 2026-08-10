@@ -30,6 +30,10 @@ export const metadata: Metadata = {
     locale: "en_IN",
     siteName: "Neptune B2B",
   },
+  icons: {
+    icon: "/images/favicon.png",
+    shortcut: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({

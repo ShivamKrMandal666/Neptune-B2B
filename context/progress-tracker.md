@@ -2,8 +2,6 @@
 
 Update this file after every meaningful implementation change.
 
-## Current Phase
-
 - Completed
 
 ## Current Goal
@@ -33,6 +31,15 @@ Update this file after every meaningful implementation change.
   New files: `ConsultationForm.tsx`, `ConsultationContext.tsx`,
   `ConsultationModal.tsx`. Updated: `layout.tsx`, `CTAButton.tsx`,
   `contact/page.tsx`. `npm run build` ✅ — 6 routes, zero errors.
+
+- `replace-logos` — Placeholder blue "M" SVG icon + hardcoded
+  "Neptune B2B" text removed from Navbar and Footer. Replaced with
+  real brand PNG assets via dedicated `HeaderLogo.tsx` (horizontal
+  lockup, `h-9`) and `FooterLogo.tsx` (stacked lockup, `h-16`)
+  components using `next/image` (height-constrained, width auto).
+  Favicon wired via `metadata.icons` in `layout.tsx`.
+  All three PNGs copied to `public/images/`. No other Navbar or
+  Footer markup touched. `npm run build` ✅ — 9 routes, zero errors.
 
 ## In Progress
 
