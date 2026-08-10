@@ -5,8 +5,8 @@ export function HeaderLogo() {
     <Image
       src="/images/header-logo.png"
       alt="Neptune B2B logo"
-      height={36}
-      width={0}
+      width={1056}
+      height={291}
       sizes="(max-width: 640px) 120px, 160px"
       className="h-9 w-auto object-contain"
       priority

@@ -15,13 +15,13 @@ Update this file after every meaningful implementation change.
   Contact), shared components (Navbar, Footer, CTAButton, Hero,
   TechStack, UdyamCertificate), lib utilities (data, motion, icons,
   utils, types) ported. All JS → TS, no `any`, strict mode passes.
-  `npm run build` ✅ — 4 static routes, zero errors.
+  `npm run build` — 4 static routes, zero errors.
 
 - `udyam-certificate` — "View Certificate" button now opens the real
   Udyam Registration Certificate PDF via iframe inside the existing
   modal shell. PDF is lazy-loaded with `next/dynamic` — not fetched
   on page load. Outer Hero card/badge left completely unchanged.
-  `npm run build` ✅ — 6 routes, zero TypeScript errors.
+  `npm run build` — 6 routes, zero TypeScript errors.
 
 - `consultation-button` — All "Book a Consultation" buttons site-wide
   (Navbar desktop/mobile, Hero, Footer, Final CTA) now open a Radix
@@ -30,7 +30,7 @@ Update this file after every meaningful implementation change.
   submission unchanged. `/contact` page left fully functional.
   New files: `ConsultationForm.tsx`, `ConsultationContext.tsx`,
   `ConsultationModal.tsx`. Updated: `layout.tsx`, `CTAButton.tsx`,
-  `contact/page.tsx`. `npm run build` ✅ — 6 routes, zero errors.
+  `contact/page.tsx`. `npm run build` — 6 routes, zero errors.
 
 - `replace-logos` — Placeholder blue "M" SVG icon + hardcoded
   "Neptune B2B" text removed from Navbar and Footer. Replaced with
@@ -39,7 +39,7 @@ Update this file after every meaningful implementation change.
   components using `next/image` (height-constrained, width auto).
   Favicon wired via `metadata.icons` in `layout.tsx`.
   All three PNGs copied to `public/images/`. No other Navbar or
-  Footer markup touched. `npm run build` ✅ — 9 routes, zero errors.
+  Footer markup touched. `npm run build` — 9 routes, zero errors.
 
 ## In Progress
 
