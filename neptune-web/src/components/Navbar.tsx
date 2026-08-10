@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { CTAButton } from "@/components/CTAButton";
+import { HeaderLogo } from "@/components/HeaderLogo";
 
 const links = [
   { href: "/", label: "Home" },
@@ -45,21 +46,8 @@ export function Navbar() {
               : "border-transparent bg-white/40 backdrop-blur-md"
           }`}
         >
-          <Link href="/" data-testid="logo-link" className="group flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1D4ED8] text-white shadow-[0_4px_14px_rgba(29,78,216,0.35)]">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M4 20V6l8 8 8-8v14"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            <span className="font-display text-lg font-bold tracking-tight text-[#0F172A]">
-              Neptune<span className="text-[#1D4ED8]"> B2B</span>
-            </span>
+          <Link href="/" data-testid="logo-link" className="flex items-center">
+            <HeaderLogo />
           </Link>
 
           {/* Desktop nav */}
