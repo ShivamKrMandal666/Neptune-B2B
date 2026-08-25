@@ -92,10 +92,14 @@ export function UdyamCertificate() {
       </motion.div>
 
       {/* Floating verified badge */}
+      {/* whileInView with once:false is the pause mechanism here, not a reveal —
+          a bare repeat:Infinity keeps Framer's rAF loop hot for the whole
+          session, competing with every scroll frame even when off-screen. */}
       <motion.div
-        animate={{ y: [0, -12, 0] }}
+        whileInView={{ y: [0, -12, 0] }}
+        viewport={{ once: false }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -left-6 -top-6 flex items-center gap-2 rounded-2xl border border-[#E2E8F0] bg-white px-4 py-3 shadow-lg"
+        className="absolute -left-6 -top-6 flex items-center gap-2 rounded-2xl border border-[#E2E8F0] bg-white px-4 py-3 shadow-lg will-change-transform"
       >
         <BadgeCheck className="h-5 w-5 text-[#1D4ED8]" />
         <div>

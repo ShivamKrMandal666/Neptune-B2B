@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -286,10 +287,12 @@ function FounderSnippet() {
         <Reveal className="lg:col-span-5">
           <div className="relative">
             <div className="absolute -inset-3 rounded-[2rem] bg-[#E0E7FF]" aria-hidden="true" />
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1752859951149-7d3fc700a7ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwyfHxkZXZlbG9wZXIlMjBjb2RpbmclMjBwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwwfHx8fDE3ODYxMzQ3NTN8MA&ixlib=rb-4.1.0&q=85"
               alt="Founder at work"
-              loading="lazy"
+              width={800}
+              height={1000}
+              sizes="(max-width: 1024px) 100vw, 40vw"
               className="relative aspect-[4/5] w-full rounded-[1.6rem] object-cover"
             />
           </div>

@@ -21,10 +21,23 @@ export function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    // Coalesce the scrollY read into one rAF per frame so it never interleaves
+    // with Framer's inline transform writes (which would force a sync layout).
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 24);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   // Mobile menu is closed by each link's onClick handler below.
@@ -39,10 +52,10 @@ export function Navbar() {
         data-testid="navbar"
       >
         <nav
-          className={`mx-auto flex max-w-7xl items-center justify-between rounded-full border px-5 py-3 transition-[background,box-shadow,border] duration-300 sm:px-6 ${
+          className={`mx-auto flex max-w-7xl items-center justify-between rounded-full border px-5 py-3 transition-colors duration-300 sm:px-6 ${
             scrolled
-              ? "border-[#E2E8F0] bg-white/80 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-xl"
-              : "border-transparent bg-white/40 backdrop-blur-md"
+              ? "border-[#E2E8F0] bg-white/95 shadow-[0_8px_30px_rgba(15,23,42,0.06)]"
+              : "border-transparent bg-white/70"
           }`}
         >
           <Link href="/" data-testid="logo-link" className="flex items-center">
