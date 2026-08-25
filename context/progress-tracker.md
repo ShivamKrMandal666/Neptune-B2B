@@ -6,9 +6,36 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- `02` — Contact form Server Action: wire Contact page form to send email via Resend
+- None — awaiting next spec.
 
 ## Completed
+
+- `supabase` — Consultation form now persists for real. The fake
+  success lived in `api/contact/route.ts` (validated, then returned
+  `{ success: true }` and did nothing), not in the form. Added
+  `@supabase/supabase-js` + `@supabase/ssr`, `src/lib/supabase/`
+  (`env.ts`, `client.ts`, `server.ts`), and
+  `supabase/migrations/0001_consultations.sql` — `consultations`
+  table with RLS on, one insert-only policy, and a column-level
+  grant so `anon` can't set `id`/`status`/`created_at`. Route now
+  inserts (`message` → `project_details`, empty phone → `null`),
+  logs Supabase errors server-side and returns a generic 502.
+  `ConsultationForm.tsx` untouched — its validation, loading,
+  success, and error states already worked. `npm run build` — 9
+  routes, zero errors; `npm run lint` — 0 errors; no `service_role`
+  in the client bundle.
+
+  Migration applied to the live project (ref `etgiknujgmnwesgibvey`)
+  via the Management API, and verified against the running database:
+  7 columns as specced, `relrowsecurity = true`, exactly one policy
+  (`INSERT`, anon+authenticated), zero table-level grants, and
+  column-level INSERT on only the 4 user-supplied columns. Probed
+  with the publishable key: insert 201; select/update/delete and an
+  insert attempting to set `status` all rejected `42501 permission
+  denied`. Route tested end to end — `message` → `project_details`
+  maps correctly, empty phone stores `NULL` not `""`, and bad
+  email / blank name / over-length phone all 400 without leaving a
+  row. Test rows deleted; table is empty.
 
 - `lag-fix` — Scroll jank fixed. Root cause was per-frame paint/composite
   cost, not React re-renders. Removed `backdrop-blur` from the fixed
@@ -61,8 +88,11 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-- `02` — Contact form Server Action: wire the Contact page form to send
-  an email via Resend to the business inbox on valid submit.
+- Set both `NEXT_PUBLIC_SUPABASE_*` vars in Vercel (Production +
+  Preview) before deploying — they are inlined at build time, so a
+  change needs a redeploy, not a restart. (`.env.local` is done.)
+- Optional: email notification on new submission (Resend, or a
+  Supabase DB webhook) so submissions don't rely on dashboard checks.
 
 ## Open Questions
 
@@ -79,6 +109,13 @@ Update this file after every meaningful implementation change.
 
 ## Architecture Decisions
 
+- Supabase Postgres is now the persistence layer, replacing the
+  never-implemented "email is the only storage" model. Writes happen
+  only in `app/api/contact/route.ts` (existing code style) rather than
+  a Server Action — no Server Action exists in this repo. Public
+  access is insert-only; the Supabase dashboard is the only reader.
+  `architecture.md`, `code-standards.md`, and `project-overview.md`
+  updated accordingly — they previously forbade a database outright.
 - New Next.js 16 (App Router + TypeScript + Tailwind v4) project lives
   at `neptune-web/` alongside the legacy `frontend/` directory (kept as
   read-only reference).

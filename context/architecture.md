@@ -8,31 +8,44 @@
 | UI         | Tailwind CSS + shadcn/ui           | Styling and reusable UI primitives                      |
 | Animation  | Framer Motion                      | Scroll reveals, hover states, micro-interactions         |
 | Auth       | None                                | No accounts, no sign-in anywhere on the site             |
-| Database   | None                                | No persisted data of any kind                            |
-| Email      | Resend                             | Sends booking-form submissions to the business inbox     |
+| Database   | Supabase (Postgres)                 | Stores consultation form submissions, insert-only via RLS |
+| Email      | Not wired                           | Optional future notification layer; not implemented      |
 
 ## System Boundaries
 
 - `app/` — Route segments for the 4 pages (Home, Services,
-  Process, Contact Us), layouts, and Server Actions
-- `app/actions/` — Server Actions only; owns the Resend
-  email-sending logic for the contact form, nothing else
+  Process, Contact Us), layouts, and route handlers
+- `app/api/contact/` — the single route handler; validates the
+  consultation form and inserts it into Supabase, nothing else
 - `components/ui/` — shadcn/ui primitives (buttons, inputs,
   cards) — presentational only, no business logic
 - `components/sections/` — Page-specific composed sections
   (hero, USP cards, process timeline, etc.) built from
   `components/ui/` primitives
 - `lib/` — Shared utilities: form validation schemas,
-  constants (contact details, nav links), Resend client setup
+  constants (contact details, nav links), Supabase client
+  factories (`lib/supabase/`)
+- `supabase/migrations/` — SQL schema, run via the Supabase
+  dashboard SQL Editor
 - `public/` — Static assets (icons, images, tech-stack logos)
 
 ## Storage Model
 
-- **No database.** This project has no persistence layer.
-- **Email as the only "storage"**: when the contact form is
-  submitted, the appointment details exist only in the email
-  sent via Resend to the business inbox — nothing is written
-  to disk, a database, or any third-party datastore.
+- **Supabase Postgres** is the persistence layer. One table:
+  `consultations` (id, name, email, phone, project_details,
+  status, created_at).
+- Submissions are written **server-side only**, from the
+  `app/api/contact` route handler. Components never talk to
+  Supabase directly.
+- Row Level Security is enabled with a single insert-only
+  policy for `anon`/`authenticated`, plus a column-level grant
+  covering `name`, `email`, `phone`, `project_details`. There
+  is no select, update, or delete policy, so those are denied
+  by default.
+- Submissions are read through the Supabase dashboard, which
+  connects as `service_role` and bypasses RLS. An in-app admin
+  view would require Supabase Auth and a scoped select policy —
+  not built.
 
 ## Auth and Access Model
 
@@ -44,13 +57,17 @@
 
 ## Invariants
 
-1. No database, ORM, or persistence layer is ever introduced
-   — the contact form's only side effect is sending an email
-   via Resend
+1. `consultations` is the only table. Public access to it is
+   insert-only, enforced by RLS plus a column-level grant — a
+   select, update, or delete policy is never added for `anon`
 2. No authentication, session, or account logic is added
    anywhere in the app
-3. The contact form submission logic lives only in
-   `app/actions/`; UI components never call Resend directly
+3. The consultation submission logic lives only in
+   `app/api/contact/route.ts`; UI components never import a
+   Supabase client or write to the database directly
+4. No `service_role` key or other secret is ever put behind a
+   `NEXT_PUBLIC_` prefix — only the publishable (anon) key,
+   which is safe to expose because RLS gates it
 4. No fabricated content (testimonials, client counters,
    trust badges) is added to any page, per the project's
    explicit exclusions
