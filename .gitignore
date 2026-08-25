@@ -26,9 +26,13 @@ next-env.d.ts
 .env.*
 *.env
 .env*.local
+!.env.example
 
 # Vercel
 .vercel
+
+# Supabase CLI scratch
+supabase/.temp/
 
 # Misc
 .DS_Store

@@ -24,14 +24,17 @@ export function Hero() {
     >
       <div className="absolute inset-0 bg-grid opacity-70" aria-hidden="true" />
       <div className="grain" />
+      {/* Framer does not add will-change for scroll-linked motion values, so the
+          promotion hints are explicit here — without them these blurred orbs
+          repaint into the main layer on every scroll frame. */}
       <motion.div
         style={{ y: yOrb1 }}
-        className="pointer-events-none absolute -right-40 -top-24 h-[520px] w-[520px] rounded-full bg-[#1D4ED8] opacity-[0.16] blur-[120px]"
+        className="pointer-events-none absolute -right-40 -top-24 h-[520px] w-[520px] rounded-full bg-[#1D4ED8] opacity-[0.16] blur-[80px] will-change-transform"
         aria-hidden="true"
       />
       <motion.div
         style={{ y: yOrb2 }}
-        className="pointer-events-none absolute -left-32 top-40 h-[420px] w-[420px] rounded-full bg-[#60A5FA] opacity-20 blur-[120px]"
+        className="pointer-events-none absolute -left-32 top-40 h-[420px] w-[420px] rounded-full bg-[#60A5FA] opacity-20 blur-[80px] will-change-transform"
         aria-hidden="true"
       />
 
@@ -98,7 +101,7 @@ export function Hero() {
         {/* Stylized browser mockup */}
         <motion.div
           style={{ y: yMock, rotate: rotMock }}
-          className="relative lg:col-span-5"
+          className="relative lg:col-span-5 will-change-transform"
           data-testid="hero-visual"
         >
           <UdyamCertificate />

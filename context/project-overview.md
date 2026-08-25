@@ -29,11 +29,11 @@ not a client-facing product or dashboard.
    understand what's offered and how engagements work
 3. Visitor reaches the Contact Us page and fills out the
    booking/contact form (Name, Email, Phone, Project details)
-4. On submit, a Next.js Server Action sends an email (via
-   Resend) to the business inbox with the appointment details;
-   the visitor sees a success state on the form
-5. (Optional) Visitor receives a confirmation email
-   acknowledging their booking request
+4. On submit, a Next.js route handler validates the input and
+   stores it in Supabase; the visitor sees a success state on
+   the form
+5. The founder reviews new submissions in the Supabase
+   dashboard and follows up directly
 
 ## Features
 
@@ -59,12 +59,14 @@ not a client-facing product or dashboard.
 - Form input focus states and loading/success/error states
   on submit
 
-### Booking / Notification
+### Booking / Storage
 
-- Contact form submission triggers a Server Action that emails
-  appointment details to the business inbox via Resend
-- No database, no auth, no client portal — email is the only
-  persistence layer
+- Contact form submission posts to a route handler that
+  validates the input and inserts a row into the Supabase
+  `consultations` table
+- Submissions are reviewed in the Supabase dashboard
+- No auth and no client portal — Supabase is used purely as a
+  write-only inbox for the form
 
 ## Scope
 
@@ -74,14 +76,16 @@ not a client-facing product or dashboard.
   Contact Us) built with Next.js 14+ App Router, TypeScript,
   and Tailwind CSS
 - Fully responsive, mobile-first layout
-- Contact form wired to send email notifications via Resend
-  (Server Action / API Route) — no data storage
+- Contact form wired to persist submissions to Supabase via a
+  route handler, with insert-only public access
 - Framer Motion animations throughout
 
 ### Out of Scope
 
-- Any backend database (no MongoDB, no Supabase, no persisted
-  records)
+- Any database beyond the single `consultations` table — no
+  user records, no analytics tables, no ORM layer
+- Reading submissions from inside the app (no admin UI) —
+  the Supabase dashboard is the only reader
 - User authentication or accounts
 - Client portal, dashboards, or any post-booking self-serve
   features
@@ -93,9 +97,10 @@ not a client-facing product or dashboard.
 
 1. A visitor can navigate all 4 pages and understand the
    agency's offer without ambiguity
-2. Submitting the contact form successfully sends a
-   well-formatted email with the appointment details to the
-   business inbox, and the visitor sees a clear success state
+2. Submitting the contact form stores a row with the
+   appointment details in Supabase, and the visitor sees a
+   clear success state — a failed write shows an error, never
+   a false success
 3. The site is fully responsive and animations do not delay
    or block access to content
 4. No testimonials, fake stats, or unearned trust signals
