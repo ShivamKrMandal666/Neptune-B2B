@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Mail, Phone, ArrowUpRight } from "lucide-react";
-import { FaLinkedinIn, FaGithub } from "react-icons/fa6";
+import { FaLinkedinIn, FaGithub, FaWhatsapp } from "react-icons/fa6";
 import { MaskText, Reveal } from "@/lib/motion";
 import { AGENCY } from "@/lib/data";
 import { ConsultationForm } from "@/components/ConsultationForm";
@@ -80,6 +80,21 @@ export default function ContactPage() {
                     <span>
                       <span className="block text-xs text-slate-400">Phone</span>
                       <span className="block text-sm font-medium">{AGENCY.phone}</span>
+                    </span>
+                  </a>
+                  <a
+                    href={`https://wa.me/${AGENCY.whatsapp.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-testid="contact-whatsapp-link"
+                    className="group flex items-center gap-4 rounded-2xl border border-white/10 p-4 transition-colors hover:border-[#1D4ED8] hover:bg-white/5"
+                  >
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1D4ED8] text-white">
+                      <FaWhatsapp className="h-5 w-5" />
+                    </span>
+                    <span>
+                      <span className="block text-xs text-slate-400">WhatsApp</span>
+                      <span className="block text-sm font-medium">{AGENCY.whatsapp}</span>
                     </span>
                   </a>
                 </div>

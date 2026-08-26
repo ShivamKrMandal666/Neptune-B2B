@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
-import { FaLinkedinIn, FaGithub } from "react-icons/fa6";
+import { FaLinkedinIn, FaGithub, FaWhatsapp } from "react-icons/fa6";
 import { AGENCY } from "@/lib/data";
 import { CTAButton } from "@/components/CTAButton";
 import { FooterLogo } from "@/components/FooterLogo";
@@ -106,6 +106,18 @@ export function Footer() {
                 >
                   <Phone className="h-4 w-4 text-[#1D4ED8]" />
                   {AGENCY.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${AGENCY.whatsapp.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center gap-3 text-sm text-slate-300 transition-colors hover:text-white"
+                  data-testid="footer-whatsapp"
+                >
+                  <FaWhatsapp className="h-4 w-4 text-[#1D4ED8]" />
+                  {AGENCY.whatsapp}
                 </a>
               </li>
             </ul>

@@ -6,6 +6,7 @@ export const AGENCY: AgencyInfo = {
   role: "Founder & Full-Stack Developer",
   email: "hello@neptuneb2b.com",
   phone: "+91 98106 15262",
+  whatsapp: "+91 62078 39264",
   linkedin: "https://www.linkedin.com/in/mandal-chandrashekhar-diwakar",
   github: "https://github.com/ShivamKrMandal666",
 };
