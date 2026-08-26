@@ -82,6 +82,18 @@ Update this file after every meaningful implementation change.
   All three PNGs copied to `public/images/`. No other Navbar or
   Footer markup touched. `npm run build` — 9 routes, zero errors.
 
+- `whatsapp-number` — Added `+91 62078 39264` as a WhatsApp contact
+  alongside the existing `+91 98106 15262` phone line. `AgencyInfo`
+  gained a `whatsapp: string` field beside `phone` (`types.ts`,
+  `data.ts`). Both render sites — the Footer "Get in touch" list and
+  the `/contact` page contact card — now show a second entry using
+  `FaWhatsapp` (`react-icons/fa6`, already a dependency) linking to
+  `https://wa.me/<digits>` in a new tab; the contact-page label reads
+  "WhatsApp" instead of "Phone". The original phone entry, its `tel:`
+  link, and its `data-testid` are unchanged. Note `wa.me` needs
+  digits only, so the WhatsApp href strips with `/\D/g` while the
+  `tel:` links keep their `/\s/g`. `npx tsc --noEmit` clean.
+
 ## In Progress
 
 - None.

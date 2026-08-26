@@ -6,6 +6,7 @@ export interface AgencyInfo {
   role: string;
   email: string;
   phone: string;
+  whatsapp: string;
   linkedin: string;
   github: string;
 }
