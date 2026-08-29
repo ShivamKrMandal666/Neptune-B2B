@@ -288,10 +288,10 @@ function FounderSnippet() {
           <div className="relative">
             <div className="absolute -inset-3 rounded-[2rem] bg-[#E0E7FF]" aria-hidden="true" />
             <Image
-              src="https://images.unsplash.com/photo-1752859951149-7d3fc700a7ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwyfHxkZXZlbG9wZXIlMjBjb2RpbmclMjBwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwwfHx8fDE3ODYxMzQ3NTN8MA&ixlib=rb-4.1.0&q=85"
-              alt="Founder at work"
-              width={800}
-              height={1000}
+              src="/images/founder.webp"
+              alt={`${AGENCY.founder}, ${AGENCY.role}`}
+              width={1108}
+              height={1420}
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="relative aspect-[4/5] w-full rounded-[1.6rem] object-cover"
             />
