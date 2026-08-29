@@ -10,6 +10,21 @@ Update this file after every meaningful implementation change.
 
 ## Completed
 
+- `founder-photo` — "The person behind it" section on Home now shows the
+  real founder photo instead of the Unsplash stock portrait. Source PNG
+  (1108×1420, 1.80 MB) compressed with `sharp` (already a Next dependency
+  — no new package, throwaway script) to `public/images/founder.webp`
+  at quality 82: **56 KB, a 32× reduction**, native resolution kept so
+  2× DPR is covered at the ~512 CSS px render size. `FounderSnippet` in
+  `app/page.tsx` updated — `src`, true intrinsic `width`/`height`, and
+  `alt` now naming `AGENCY.founder`/`AGENCY.role`; `sizes`, `className`,
+  and the surrounding `Reveal`/backdrop markup untouched. Source aspect
+  0.780 vs the `aspect-[4/5]` box (0.800) so `object-cover` crops ~2%.
+  With that gone there were no remote images left, so the dead
+  `images.remotePatterns` entry for `images.unsplash.com` was removed
+  from `next.config.ts`. `npm run build` — 7 routes, zero errors;
+  `npm run lint` — 0 errors.
+
 - `supabase` — Consultation form now persists for real. The fake
   success lived in `api/contact/route.ts` (validated, then returned
   `{ success: true }` and did nothing), not in the form. Added
